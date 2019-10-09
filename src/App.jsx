@@ -31,7 +31,7 @@ class App extends Component {
               <Route component={NoMatch} />
             </Switch>
           </main>
-            <Practice />
+          <Practice />
         </ScrollToTop>
       </Router>
     );
