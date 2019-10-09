@@ -9,7 +9,10 @@ class Practice extends React.PureComponent {
     this.state = {
       data: {},
       graphData: {},
+      clickedPt: {},
     };
+    this.onChartClick = this.onChartClick.bind(this);
+    this.getOption = this.getOption.bind(this);
   }
 
   componentDidMount() {
@@ -19,79 +22,111 @@ class Practice extends React.PureComponent {
         ...prevState,
         data: res.data,
       }));
-      this.parseDataEcharts();
     });
   }
 
-  parseDataEcharts() {
-    const dataArr = [];
-    const { data } = this.state;
-    if (Object.keys(data).length !== 0) {
-      for (let i = 0; i < data.galaxies.length; i += 1) {
-        const point = data.galaxies[i];
-        const coor = [];
-        coor.push(point.RA);
-        coor.push(point.Dec);
-        dataArr.push(coor);
-      }
-      this.setState(prevState => ({
-        ...prevState,
-        graphData: dataArr,
-      }));
-    }
-  }
-
-  onChartClick(params){
-    console.log(params);
-    console.log(params.color)
+  onChartClick(params) {
+    this.setState(prevState => ({
+      ...prevState,
+      clickedPt: params.value,
+    }));
   }
 
   getEvent() {
     const onEvents = {
-        'click': this.onChartClick,
-    }
+      click: this.onChartClick,
+    };
     return onEvents;
-  };
+  }
 
   getOption() {
-    const { graphData } = this.state;
-    const obj = {
-      title: {
-        text: 'Exploring Observable Universe',
-      },
-      tooltip: {
-        formatter: params => {
-          const data = params.data || [0, 0];
-          return data[0].toFixed(2) + ', ' + data[1].toFixed(2);
+    const { data, clickedPt } = this.state;
+    let obj = {};
+    if (Object.keys(data).length !== 0) {
+      obj = {
+        animation: false,
+        title: {
+          text: 'Exploring Observable Universe',
         },
-        axisPointer: {
-          type: 'cross',
+        legend: {
+          orient: 'vertical',
+          right: 5,
         },
-      },
-      xAxis: {
-        name: 'RA',
-        nameLocation: 'middle',
-        nameGap: 25,
-      },
-      yAxis: {
-        name: 'Dec',
-        nameLocation: 'middle',
-        nameGap: 25,
-      },
-      series: [
-        {
-          symbolSize: 3,
-          data: graphData,
-          type: 'scatter',
+        dataset: {
+          source: data.galaxies,
+          dimensions: ['RA', 'Dec'],
         },
-      ],
-    };
+        tooltip: {
+          formatter: params => {
+            const dat = params.value;
+            return dat.RA.toFixed(2) + ', ' + dat.Dec.toFixed(2);
+          },
+        },
+        xAxis: {
+          name: 'RA',
+          nameLocation: 'middle',
+          nameGap: 25,
+        },
+        yAxis: {
+          name: 'Dec',
+          nameLocation: 'middle',
+          nameGap: 25,
+        },
+        series: [
+          {
+            name: 'Data Point',
+            symbolSize: 8,
+            type: 'scatter',
+            itemStyle: {
+              normal: {
+                color: params => {
+                  const { value } = params;
+                  const defaultColor = '#e97a7a';
+                  if (value == null) {
+                    return '';
+                  } else if (
+                    clickedPt.RA === value.RA &&
+                    clickedPt.Dec === value.Dec
+                  ) {
+                    return '#b7b7ff';
+                  } else {
+                    return defaultColor;
+                  }
+                },
+              },
+            },
+          },
+        ],
+        dataZoom: [
+          {
+            type: 'slider',
+            show: false,
+            xAxisIndex: [0],
+            minSpan: 5,
+          },
+          {
+            type: 'slider',
+            show: false,
+            yAxisIndex: [0],
+            minSpan: 5,
+          },
+          {
+            type: 'inside',
+            xAxisIndex: [0],
+            minSpan: 5,
+          },
+          {
+            type: 'inside',
+            yAxisIndex: [0],
+            minSpan: 5,
+          },
+        ],
+      };
+    }
     return obj;
   }
 
   render() {
-    const { graphData } = this.state;
-    console.log(graphData);
     return (
       <ReactEcharts
         onEvents={this.getEvent()}
