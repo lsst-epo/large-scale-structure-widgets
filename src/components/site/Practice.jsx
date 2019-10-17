@@ -47,7 +47,7 @@ class Practice extends React.PureComponent {
     if (value == null) {
       return '';
     }
-    if (isEqual(value, clickedPt)) {
+    if (isEqual(clickedPt, value)) {
       return '#b7b7ff';
     }
     return defaultColor;
@@ -64,7 +64,6 @@ class Practice extends React.PureComponent {
       return {};
     }
     return {
-      animation: false,
       title: {
         text: 'Exploring Observable Universe',
       },
@@ -89,18 +88,21 @@ class Practice extends React.PureComponent {
         nameLocation: 'middle',
         nameGap: 25,
       },
+
       series: [
         {
           name: 'Data Point',
           symbolSize: 8,
           type: 'scatter',
+          large: true,
           itemStyle: {
-            normal: {
-              color: this.getColor,
+            color: params => {
+              return this.getColor(params);
             },
           },
         },
       ],
+      animation: false,
       dataZoom: [
         {
           type: 'slider',
