@@ -11,9 +11,8 @@ class Practice extends React.PureComponent {
       data: {},
       graphData: {},
       clickedPt: {},
+      selectedPt: [],
     };
-    this.onChartClick = this.onChartClick.bind(this);
-    // this.getOption = this.getOption.bind(this);
   }
 
   componentDidMount() {
@@ -27,8 +26,11 @@ class Practice extends React.PureComponent {
   }
 
   onChartClick = params => {
+    // enforce same point does not get added to state array
+    const ptArr = [params.value.RA, params.value.Dec];
     this.setState(prevState => ({
       ...prevState,
+      selectedPt: [...prevState.selectedPt, ptArr],
       clickedPt: params.value,
     }));
   };
@@ -40,26 +42,35 @@ class Practice extends React.PureComponent {
     return onEvents;
   }
 
-  getColor = params => {
-    const { clickedPt } = this.state;
-    const { value } = params;
-    const defaultColor = '#e97a7a';
-    if (value == null) {
-      return '';
-    }
-    if (isEqual(clickedPt, value)) {
-      return '#b7b7ff';
-    }
-    return defaultColor;
-  };
+  // getColor = params => {
+  //   const { clickedPt } = this.state;
+  //   const { value } = params;
+  //   const defaultColor = '#e97a7a';
+  //   if (value == null) {
+  //     return '';
+  //   }
+  //   if (isEqual(clickedPt, value)) {
+  //     return '#b7b7ff';
+  //   }
+  //   return defaultColor;
+  // };
 
   getTooltipFormat = params => {
     const dat = params.value;
+    if (Array.isArray(params.value)) {
+      return dat[0].toFixed(2) + ', ' + dat[1].toFixed(2);
+    }
     return dat.RA.toFixed(2) + ', ' + dat.Dec.toFixed(2);
   };
 
   getOption() {
-    const { data } = this.state;
+    const { data, selectedPt } = this.state;
+    let legendPt = '';
+    let legendIcon = 'none';
+    if (selectedPt.length !== 0) {
+      legendPt = 'Selected Data Point';
+      legendIcon = 'circle';
+    }
     if (Object.keys(data).length === 0) {
       return {};
     }
@@ -68,15 +79,26 @@ class Practice extends React.PureComponent {
         text: 'Exploring Observable Universe',
       },
       legend: {
+        // factor out into a function
         orient: 'vertical',
         right: 5,
+        data: [
+          {
+            name: 'Data Point',
+            icon: 'circle',
+          },
+          {
+            name: legendPt,
+            icon: legendIcon,
+          },
+        ],
       },
       dataset: {
         source: data.galaxies,
         dimensions: ['RA', 'Dec'],
       },
       tooltip: {
-        formatter: this.getTooltipFormat,
+        // formatter: this.getTooltipFormat,
       },
       xAxis: {
         name: 'RA',
@@ -88,20 +110,30 @@ class Practice extends React.PureComponent {
         nameLocation: 'middle',
         nameGap: 25,
       },
-
+      color: ['#C38D9E', '#E8A87C'],
       series: [
         {
           name: 'Data Point',
           symbolSize: 8,
           type: 'scatter',
           large: true,
-          itemStyle: {
-            color: params => {
-              return this.getColor(params);
-            },
-          },
+          // itemStyle: {
+          //   color: params => {
+          //     return this.getColor(params);
+          //   },
+          // },
+        },
+        {
+          name: 'Selected Data Point',
+          symbolSize: 8,
+          type: 'scatter',
+          data: selectedPt,
+          large: true,
         },
       ],
+      textStyle: {
+        fontFamily: 'Karla',
+      },
       animation: false,
       dataZoom: [
         {
