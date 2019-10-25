@@ -2,6 +2,7 @@ import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import isEqual from 'lodash/isEqual';
 import API from './API';
+import Card from './Card';
 
 class Practice extends React.PureComponent {
   constructor(props) {
@@ -63,8 +64,16 @@ class Practice extends React.PureComponent {
       color +
       ";margin-right:5px;'></span><span>" +
       string +
-      '</span>'
+      "</span>"
     );
+  };
+
+  getCard = () => {
+    const { selectedPt } = this.state;
+    if (selectedPt.length !== 0) {
+      return <Card data={selectedPt} />;
+    }
+    return null;
   };
 
   getTooltipFormat = params => {
@@ -155,6 +164,7 @@ class Practice extends React.PureComponent {
           type: 'piecewise',
           dimension: 2,
           pieces: [
+          // different shades
             { min: 0, max: 0.09, color: '#d94e5d' },
             { min: 0.09, max: 0.15, color: '#58508d' },
             { min: 0.15, max: 0.2, color: '#eac736' },
@@ -223,11 +233,14 @@ class Practice extends React.PureComponent {
 
   render() {
     return (
-      <ReactEcharts
-        onEvents={this.getEvent()}
-        style={{ height: '1000px' }}
-        option={this.getOption()}
-      />
+      <div>
+        {this.getCard()}
+        <ReactEcharts
+          onEvents={this.getEvent()}
+          style={{ height: '1000px' }}
+          option={this.getOption()}
+        />
+      </div>
     );
   }
 }
