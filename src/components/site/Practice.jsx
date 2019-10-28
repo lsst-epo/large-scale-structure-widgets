@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-import isEqual from 'lodash/isEqual';
+// import isEqual from 'lodash/isEqual';
 import API from './API';
 import Card from './Card';
+import InputBox from './InputBox';
 
 class Practice extends React.PureComponent {
   constructor(props) {
@@ -64,7 +65,7 @@ class Practice extends React.PureComponent {
       color +
       ";margin-right:5px;'></span><span>" +
       string +
-      "</span>"
+      '</span>'
     );
   };
 
@@ -164,10 +165,10 @@ class Practice extends React.PureComponent {
           type: 'piecewise',
           dimension: 2,
           pieces: [
-          // different shades
-            { min: 0, max: 0.09, color: '#d94e5d' },
-            { min: 0.09, max: 0.15, color: '#58508d' },
-            { min: 0.15, max: 0.2, color: '#eac736' },
+            // different shades
+            { min: 0, max: 0.09, color: ' #ffbaba' },
+            { min: 0.09, max: 0.15, color: '#ff5252' },
+            { min: 0.15, max: 0.2, color: ' #a70000' },
           ],
           outOfRange: {
             color: ['#000'],
@@ -235,6 +236,7 @@ class Practice extends React.PureComponent {
     return (
       <div>
         {this.getCard()}
+        <InputBox />
         <ReactEcharts
           onEvents={this.getEvent()}
           style={{ height: '1000px' }}
