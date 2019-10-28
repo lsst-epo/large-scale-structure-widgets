@@ -11,11 +11,11 @@ class Card extends React.PureComponent {
   getColor = coors => {
     const redshift = coors[2];
     if (redshift < 0.09) {
-      return '#d94e5d';
+      return '#ffbaba';
     } else if (redshift < 0.15) {
-      return '#58508d';
+      return '#ff5252';
     }
-    return '#eac736';
+    return '#a70000';
   };
 
   render() {

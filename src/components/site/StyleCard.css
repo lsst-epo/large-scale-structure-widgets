@@ -1,7 +1,7 @@
 .table {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  width: 61%;
+  width: 60%;
   border-radius: 5px;
   border: 1px solid black;
   border-collapse: collapse;
@@ -29,4 +29,9 @@
   border-radius: 50%;
   display: inline-block;
   margin-left: 10px;
+}
+
+.card {
+	width:60%;
+	margin: 25px;
 }
