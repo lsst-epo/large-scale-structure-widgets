@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
-// import isEqual from 'lodash/isEqual';
-import API from './API';
 import Card from './Card';
-import InputBox from './InputBox';
 
 class Practice extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: {},
       graphData: {},
       clickedPt: {},
       selectedPt: [],
@@ -19,24 +15,25 @@ class Practice extends React.PureComponent {
     };
   }
 
-  componentDidMount() {
-    API.get('static-data/SDSS_SpecGals_DR8_25000.json').then(res => {
-      console.log(res.data);
-      this.setState(prevState => ({
-        ...prevState,
-        data: res.data,
-      }));
+  isArrayInArray = item => {
+    const { selectedPt } = this.state;
+    const itemAsString = JSON.stringify(item);
+
+    const contains = selectedPt.some(ele => {
+      return JSON.stringify(ele) === itemAsString;
     });
-  }
+    return contains;
+  };
 
   onChartClick = params => {
-    // enforce same point does not get added to state array
     const ptArr = [params.value.RA, params.value.Dec, params.value.redshift];
-    this.setState(prevState => ({
-      ...prevState,
-      selectedPt: [...prevState.selectedPt, ptArr],
-      clickedPt: params.value,
-    }));
+    if (params.seriesIndex === 0) {
+      this.setState(prevState => ({
+        ...prevState,
+        selectedPt: [...prevState.selectedPt, ptArr],
+        clickedPt: params.value,
+      }));
+    }
   };
 
   getEvent() {
@@ -46,19 +43,6 @@ class Practice extends React.PureComponent {
     return onEvents;
   }
 
-  // getColor = params => {
-  //   const { clickedPt } = this.state;
-  //   const { value } = params;
-  //   const defaultColor = '#e97a7a';
-  //   if (value == null) {
-  //     return '';
-  //   }
-  //   if (isEqual(clickedPt, value)) {
-  //     return '#b7b7ff';
-  //   }
-  //   return defaultColor;
-  // };
-
   formatTooltipPoint = (color, string) => {
     return (
       "<span style='display:inline-block;width:10px;height:10px;border-radius:50%;background-color:" +
@@ -67,14 +51,6 @@ class Practice extends React.PureComponent {
       string +
       '</span>'
     );
-  };
-
-  getCard = () => {
-    const { selectedPt } = this.state;
-    if (selectedPt.length !== 0) {
-      return <Card data={selectedPt} />;
-    }
-    return null;
   };
 
   getTooltipFormat = params => {
@@ -139,7 +115,8 @@ class Practice extends React.PureComponent {
   }
 
   getOption() {
-    const { data, selectedPt } = this.state;
+    const { data } = this.props;
+    const { selectedPt } = this.state;
     if (Object.keys(data).length === 0) {
       return {};
     }
@@ -149,7 +126,7 @@ class Practice extends React.PureComponent {
       },
       legend: this.getLegend(),
       dataset: {
-        source: data.galaxies,
+        source: data,
         dimensions: ['RA', 'Dec', 'redshift'],
       },
       tooltip: {
@@ -165,8 +142,7 @@ class Practice extends React.PureComponent {
           type: 'piecewise',
           dimension: 2,
           pieces: [
-            // different shades
-            { min: 0, max: 0.09, color: ' #ffbaba' },
+            { min: 0, max: 0.09, color: '#ffbaba' },
             { min: 0.09, max: 0.15, color: '#ff5252' },
             { min: 0.15, max: 0.2, color: ' #a70000' },
           ],
@@ -175,6 +151,7 @@ class Practice extends React.PureComponent {
           },
         },
       ],
+
       color: ['#A8D0E6', '#374785'],
       series: [
         {
@@ -183,11 +160,7 @@ class Practice extends React.PureComponent {
           type: 'scatter',
           legendHoverLink: true,
           large: true,
-          // itemStyle: {
-          //   color: params => {
-          //     return this.getColor(params);
-          //   },
-          // },
+          largeThreshold: 1000,
         },
         {
           name: 'Selected Data Point',
@@ -196,7 +169,7 @@ class Practice extends React.PureComponent {
           data: selectedPt,
           emphasis: {
             itemStyle: {
-              color: '#24305E',
+              color: '#374785',
             },
           },
         },
@@ -233,15 +206,17 @@ class Practice extends React.PureComponent {
   }
 
   render() {
+    const { selectedPt } = this.state;
     return (
-      <div>
-        {this.getCard()}
-        <InputBox />
+      <div
+        style={{ alignItems: 'center', display: 'flex', flexDirection: 'row' }}
+      >
         <ReactEcharts
           onEvents={this.getEvent()}
-          style={{ height: '1000px' }}
+          style={{ height: '600px', width: '50%' }}
           option={this.getOption()}
         />
+        {selectedPt.length !== 0 && <Card data={selectedPt} />}
       </div>
     );
   }

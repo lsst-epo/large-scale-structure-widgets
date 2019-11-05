@@ -9,52 +9,55 @@ class InputBox extends React.PureComponent {
     super(props);
 
     this.state = {
-      redshiftVal1: '',
-      redshiftVal2: '',
+      redshiftVal1: 0,
+      redshiftVal2: 0,
     };
   }
 
   handleChange = name => event => {
-    console.log(name);
-    console.log(event);
+    const { onUserInput } = this.props;
     this.setState({
       [name]: event,
     });
+    onUserInput(name, event);
   };
 
   render() {
     return (
-      <Card className='card'>
+      <Card className="card">
         <CardBody>
+          <h2>
+            Enter the range of redshift values you would like to see. <br />
+          </h2>
           <div>
-            <span style={{ marginRight: '20px' }} className="inline">
-              Enter the range of redshift values you would like to see. From
+            <span style={{ margin: '10px' }} className="inline">
+              From
             </span>
             <span>
               <TextField
                 id="inline-text-input-1"
-                type="text"
+                type="number"
                 style={{ maxWidth: '200px' }}
                 className="inline-block"
                 label=""
                 onChange={this.handleChange('redshiftVal1')}
                 lineDirection="center"
-                placeholder="Type Text Here"
+                placeholder="Type Number Here"
               />
             </span>
-            <span style={{ marginLeft: '20px' }} className="inline">
+            <span style={{ margin: '10px' }} className="inline">
               to
             </span>
             <span>
               <TextField
                 id="inline-text-input-2"
-                type="text"
+                type="number"
                 style={{ maxWidth: '200px' }}
                 className="inline-block"
                 label=""
                 onChange={this.handleChange('redshiftVal2')}
                 lineDirection="center"
-                placeholder="Type Text Here"
+                placeholder="Type Number Here"
               />
             </span>
           </div>
