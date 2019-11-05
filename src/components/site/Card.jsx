@@ -19,30 +19,34 @@ class Card extends React.PureComponent {
   };
 
   render() {
+    const { data } = this.props;
     return (
       <table className="table">
-        <tr className="tr">
-          <th className="th">Index</th>
-          <th className="th">RA</th>
-          <th className="th">Dec</th>
-          <th className="th">Redshift</th>
-        </tr>
-        {this.props.data.map((coors, index) => {
-          return (
-            <tr className="tr">
-              <td className="th">
-                {index}
-                <span
-                  style={{ backgroundColor: this.getColor(coors) }}
-                  className="circle"
-                />
-              </td>
-              <td className="th">{coors[0]}</td>
-              <td className="th">{coors[1]}</td>
-              <td className="th">{coors[2]}</td>
-            </tr>
-          );
-        })}
+        <tbody>
+          <tr className="tr">
+            <th className="th">Index</th>
+            <th className="th">RA</th>
+            <th className="th">Dec</th>
+            <th className="th">Redshift</th>
+          </tr>
+          {data.map((coors, index) => {
+            const key = `row-${index}`;
+            return (
+              <tr className="tr" key={key}>
+                <td className="th">
+                  {index}
+                  <span
+                    style={{ backgroundColor: this.getColor(coors) }}
+                    className="circle"
+                  />
+                </td>
+                <td className="th">{coors[0]}</td>
+                <td className="th">{coors[1]}</td>
+                <td className="th">{coors[2]}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     );
   }

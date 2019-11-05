@@ -4,7 +4,7 @@ import { hot } from 'react-hot-loader/root';
 import { Route, HashRouter as Router, Switch } from 'react-router-dom';
 import ScrollToTop from './components/site/ScrollToTop';
 import SiteHeader from './components/site/SiteHeader';
-import Practice from './components/site/Practice';
+import ChartLayout from './components/site/ChartLayout';
 import StyleGuide from './StyleGuide';
 import Questions from './Questions';
 import Example from './Example';
@@ -28,10 +28,10 @@ class App extends Component {
               />
               <Route exact path="/styles" component={StyleGuide} />
               <Route exact path="/questions" component={Questions} />
+              <Route path="/chart" component={ChartLayout} />
               <Route component={NoMatch} />
             </Switch>
           </main>
-          <Practice />
         </ScrollToTop>
       </Router>
     );
