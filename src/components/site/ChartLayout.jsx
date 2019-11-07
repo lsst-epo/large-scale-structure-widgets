@@ -3,7 +3,7 @@ import API from './API';
 import InputBox from './InputBox';
 import ScatterPlot from './ScatterPlot';
 
-class Practice extends React.PureComponent {
+class ChartLayout extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -57,4 +57,4 @@ class Practice extends React.PureComponent {
     );
   }
 }
-export default Practice;
+export default ChartLayout;
