@@ -22,6 +22,23 @@ class InputBox extends React.PureComponent {
     onUserInput(name, event);
   };
 
+  renderTextField(id, redshiftKey) {
+    return (
+      <span>
+        <TextField
+          id={`inline-text-input-${id}`}
+          type="number"
+          style={{ maxWidth: '200px' }}
+          className="inline-block"
+          label=""
+          onChange={this.handleChange(redshiftKey)}
+          lineDirection="center"
+          placeholder="Type Number Here"
+        />
+      </span>
+    );
+  }
+
   render() {
     return (
       <Card className="card">
@@ -33,33 +50,11 @@ class InputBox extends React.PureComponent {
             <span style={{ margin: '10px' }} className="inline">
               From
             </span>
-            <span>
-              <TextField
-                id="inline-text-input-1"
-                type="number"
-                style={{ maxWidth: '200px' }}
-                className="inline-block"
-                label=""
-                onChange={this.handleChange('redshiftVal1')}
-                lineDirection="center"
-                placeholder="Type Number Here"
-              />
-            </span>
+            {this.renderTextField('inline-text-inline-1', 'redshiftVal1')}
             <span style={{ margin: '10px' }} className="inline">
               to
             </span>
-            <span>
-              <TextField
-                id="inline-text-input-2"
-                type="number"
-                style={{ maxWidth: '200px' }}
-                className="inline-block"
-                label=""
-                onChange={this.handleChange('redshiftVal2')}
-                lineDirection="center"
-                placeholder="Type Number Here"
-              />
-            </span>
+            {this.renderTextField('inline-text-inline-2', 'redshiftVal2')}
           </div>
         </CardBody>
       </Card>
