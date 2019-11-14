@@ -74,6 +74,7 @@
     "echarts-for-react": "^2.0.15-beta.0",
     "local-storage": "^2.0.0",
     "lodash": "^4.17.14",
+    "nouislider-react": "^3.3.5",
     "prop-types": "15.7.2",
     "react": "16.8.6",
     "react-dom": "16.8.6",

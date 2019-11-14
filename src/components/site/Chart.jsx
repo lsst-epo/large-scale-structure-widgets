@@ -16,8 +16,13 @@ class Practice extends React.PureComponent {
   }
 
   onChartClick = params => {
-    const ptArr = [params.value.RA, params.value.Dec, params.value.redshift];
+    let ptArr = [];
     if (params.seriesIndex === 0) {
+      ptArr = params.value;
+    } else if (params.seriesIndex === 2) {
+      ptArr = [params.value.RA, params.value.Dec, params.value.redshift];
+    }
+    if (params.seriesIndex !== 1) {
       this.setState(prevState => ({
         ...prevState,
         selectedPt: [...prevState.selectedPt, ptArr],
@@ -49,7 +54,7 @@ class Practice extends React.PureComponent {
     let color = '';
     if (Array.isArray(params.value)) {
       string = dat[0].toFixed(2) + ', ' + dat[1].toFixed(2);
-      color = '#374785';
+      color = '#A8D0E6';
     } else {
       string =
         dat.RA.toFixed(2) +
@@ -57,7 +62,7 @@ class Practice extends React.PureComponent {
         dat.Dec.toFixed(2) +
         ', ' +
         dat.redshift.toFixed(2);
-      color = '#A8D0E6';
+      color = '#374785';
     }
     return this.formatTooltipPoint(color, string);
   };
@@ -105,9 +110,9 @@ class Practice extends React.PureComponent {
   }
 
   getOption() {
-    const { data } = this.props;
+    const { bigData, highlightSeries } = this.props;
     const { selectedPt } = this.state;
-    if (Object.keys(data).length === 0) {
+    if (Object.keys(bigData).length === 0) {
       return {};
     }
     return {
@@ -116,7 +121,7 @@ class Practice extends React.PureComponent {
       },
       legend: this.getLegend(),
       dataset: {
-        source: data,
+        source: highlightSeries,
         dimensions: ['RA', 'Dec', 'redshift'],
       },
       tooltip: {
@@ -150,6 +155,7 @@ class Practice extends React.PureComponent {
           type: 'scatter',
           legendHoverLink: true,
           large: true,
+          data: bigData,
           largeThreshold: 1000,
         },
         {
@@ -162,6 +168,13 @@ class Practice extends React.PureComponent {
               color: '#374785',
             },
           },
+        },
+        {
+          name: 'Highlighted Data Point',
+          symbolSize: 8,
+          type: 'scatter',
+          large: true,
+          largeThreshold: 1000,
         },
       ],
       textStyle: {

@@ -9,6 +9,7 @@ import StyleGuide from './StyleGuide';
 import Questions from './Questions';
 import Example from './Example';
 import NoMatch from './components/site/NoMatch';
+import Layout from './components/site/Layout';
 
 @reactn
 class App extends Component {
@@ -28,7 +29,8 @@ class App extends Component {
               />
               <Route exact path="/styles" component={StyleGuide} />
               <Route exact path="/questions" component={Questions} />
-              <Route path="/chart" component={ChartLayout} />
+              <Route exact path="/phase1" component={ChartLayout} />
+              <Route exact path="/phase2" component={Layout} />
               <Route component={NoMatch} />
             </Switch>
           </main>
