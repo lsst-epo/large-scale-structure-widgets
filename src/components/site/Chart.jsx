@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
+import PropTypes from 'prop-types';
 import Card from './Card';
 
-class Practice extends React.PureComponent {
+class Chart extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -109,11 +110,30 @@ class Practice extends React.PureComponent {
     };
   }
 
+  clearArray() {
+    this.setState(prevState => ({
+      ...prevState,
+      selectedPt: [],
+    }));
+  }
+
   getOption() {
-    const { bigData, highlightSeries } = this.props;
+    let { bigData } = this.props;
+    const { highlightSeries, largeBool, trimBool } = this.props;
     const { selectedPt } = this.state;
+
+    let opacityNum = 1;
+    let ptColor = '#A8D0E6';
+    if (!trimBool) {
+      opacityNum = 0.25;
+      ptColor = '#374785';
+    }
+
     if (Object.keys(bigData).length === 0) {
       return {};
+    }
+    if (trimBool && highlightSeries.length !== 0) {
+      bigData = [];
     }
     return {
       title: {
@@ -147,7 +167,7 @@ class Practice extends React.PureComponent {
         },
       ],
 
-      color: ['#A8D0E6', '#374785'],
+      color: ['#A8D0E6', '#54ff', '#374785'],
       series: [
         {
           name: 'Data Point',
@@ -157,6 +177,9 @@ class Practice extends React.PureComponent {
           large: true,
           data: bigData,
           largeThreshold: 1000,
+          itemStyle: {
+            opacity: opacityNum,
+          },
         },
         {
           name: 'Selected Data Point',
@@ -173,7 +196,10 @@ class Practice extends React.PureComponent {
           name: 'Highlighted Data Point',
           symbolSize: 8,
           type: 'scatter',
-          large: true,
+          large: largeBool,
+          itemStyle: {
+            color: ptColor,
+          },
           largeThreshold: 1000,
         },
       ],
@@ -224,4 +250,12 @@ class Practice extends React.PureComponent {
     );
   }
 }
-export default Practice;
+
+Chart.propTypes = {
+  largeBool: PropTypes.bool,
+  trimBool: PropTypes.bool,
+  bigData: PropTypes.array,
+  highlightSeries: PropTypes.array,
+};
+
+export default Chart;

@@ -13,8 +13,13 @@ $fill-color: darken($control-color, 10%);
 
 $gutter-height: 16px;
 
+
+
+
+
 .noUi-target{
 	width: 50%;
+  padding: 0 17px;
 }
 
 .noUi-base {
@@ -22,7 +27,12 @@ $gutter-height: 16px;
   .noUi-connect {
     background-image:  linear-gradient(90deg, rgba(249,168,189,0.7091211484593838) 0%, rgba(223,19,34,1) 50%, rgba(105,3,37,1) 100%);
   }
-
+  .noUi-tooltip {
+    display: none;
+  }
+  .noUi-active .noUi-tooltip {
+    display: block;
+  }
   .noUi-handle {
     background-color: $control-color;
     color: #FFFFFF;
