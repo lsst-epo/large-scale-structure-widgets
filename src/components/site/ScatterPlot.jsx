@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactEcharts from 'echarts-for-react';
+import PropTypes from 'prop-types';
 import Card from './Card';
 
-class Practice extends React.PureComponent {
+class ScatterPlot extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -211,4 +212,9 @@ class Practice extends React.PureComponent {
     );
   }
 }
-export default Practice;
+
+ScatterPlot.propTypes = {
+  data: PropTypes.array,
+};
+
+export default ScatterPlot;

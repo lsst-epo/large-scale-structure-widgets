@@ -8,91 +8,103 @@ import './StyleSlider.css';
 class Practice extends React.PureComponent {
   constructor(props) {
     super(props);
-
     this.state = {
       data: {},
       sliderVal1: 0,
       sliderVal2: 0,
+      minimum: null,
+      maximum: null,
+      formatData: null,
+      filterData: null,
     };
   }
 
   componentDidMount() {
     API.get('static-data/SDSS_SpecGals_DR8_25000.json').then(res => {
-      console.log(res.data);
       this.setState(prevState => ({
         ...prevState,
         data: res.data,
+        minimum: this.getMin(res.data.galaxies),
+        maximum: this.getMax(res.data.galaxies),
+        formatData: this.createArray(res.data.galaxies),
       }));
     });
   }
 
-  onUpdate = () => value => {
-    this.setState({
+  onUpdate = value => {
+    const { data, sliderVal1, sliderVal2 } = this.state;
+    let newArray = [];
+    if (Object.keys(data).length !== 0) {
+      const arrObj = data.galaxies;
+      newArray = arrObj.filter(obj => {
+        return obj.redshift >= sliderVal1 && obj.redshift <= sliderVal2;
+      });
+    }
+    this.setState(prevState => ({
+      ...prevState,
       sliderVal1: parseFloat(value[0], 10),
       sliderVal2: parseFloat(value[1], 10),
-    });
+      filterData: newArray,
+    }));
   };
 
+  getMax(arrObj) {
+    let temp = 0;
+    for (let i = 0; i < arrObj.length; i += 1) {
+      const obj = arrObj[i];
+      if (obj.redshift > temp) {
+        temp = obj.redshift;
+      }
+    }
+    return temp;
+  }
+
+  getMin(arrObj) {
+    let temp = 1000;
+    for (let i = 0; i < arrObj.length; i += 1) {
+      const obj = arrObj[i];
+      if (obj.redshift < temp) {
+        temp = obj.redshift;
+      }
+    }
+    return temp;
+  }
+
   createArray(arrObj) {
-    let max = 0;
-    let min = 1000;
     const array = [];
-    for (let i = 0; i < arrObj.length; i++) {
+    for (let i = 0; i < arrObj.length; i += 1) {
       const obj = arrObj[i];
       const temp = [];
-      if (obj.redshift > max) {
-        max = obj.redshift;
-      }
-      if (obj.redshift < min) {
-        min = obj.redshift;
-      }
       temp.push(obj.RA);
       temp.push(obj.Dec);
       temp.push(obj.redshift);
       array.push(temp);
     }
-    return { data: array, maximum: max, minimum: min };
+    return array;
   }
 
   render() {
-    const { data, sliderVal1, sliderVal2 } = this.state;
-    let newArray = [];
-    let infoObj = { data: {}, maximum: null, minimum: null };
-    if (Object.keys(data).length !== 0) {
-      infoObj = this.createArray(data.galaxies);
-      const arrObj = data.galaxies;
-      newArray = arrObj.filter(obj => {
-        return obj.redshift >= sliderVal1 && obj.redshift <= sliderVal2;
-      });
-      if (
-        sliderVal1 === Number(infoObj.minimum.toFixed(2)) &&
-        sliderVal2 === Number(infoObj.maximum.toFixed(2))
-      ) {
-        newArray = [];
-      }
-    }
+    const { minimum, maximum, filterData, formatData } = this.state;
 
     return (
       <div>
-        <Chart bigData={infoObj.data} highlightSeries={newArray} />
-
-        {infoObj.minimum && infoObj.maximum && (
-          <Nouislider
-            onUpdate={this.onUpdate()}
-            range={{ min: infoObj.minimum, max: infoObj.maximum }}
-            start={[infoObj.minimum, infoObj.maximum]}
-            connect
+        {filterData && formatData && (
+          <Chart
+            bigData={formatData}
+            largeBool={false}
+            trimBool={true}
+            highlightSeries={filterData}
           />
         )}
-        {sliderVal1 && (
-          <div style={{ position: 'relative', left: '0%', top: '35px' }}>
-            {sliderVal1}
-          </div>
-        )}
-        {sliderVal2 && (
-          <div style={{ position: 'relative', left: '50%', top: '10px' }}>
-            {sliderVal2}
-          </div>
+
+        {minimum && maximum && (
+          <Nouislider
+            onUpdate={this.onUpdate}
+            range={{ min: minimum, max: maximum }}
+            start={[minimum, maximum]}
+            tooltips={[true, true]}
+            connect
+          />
         )}
       </div>
     );

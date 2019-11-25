@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './StyleCard.css';
 
 class Card extends React.PureComponent {
@@ -51,4 +52,9 @@ class Card extends React.PureComponent {
     );
   }
 }
+
+Card.propTypes = {
+  data: PropTypes.array,
+};
+
 export default Card;

@@ -2,6 +2,7 @@ import React from 'react';
 import Card from 'react-md/lib/Cards/Card';
 import CardBody from 'react-md/lib/Cards/CardText';
 import TextField from 'react-md/lib/TextFields/TextField';
+import PropTypes from 'prop-types';
 import './StyleCard.css';
 
 class InputBox extends React.PureComponent {
@@ -16,9 +17,10 @@ class InputBox extends React.PureComponent {
 
   handleChange = name => event => {
     const { onUserInput } = this.props;
-    this.setState({
+    this.setState(prevState => ({
+      ...prevState,
       [name]: event,
-    });
+    }));
     onUserInput(name, event);
   };
 
@@ -61,4 +63,9 @@ class InputBox extends React.PureComponent {
     );
   }
 }
+
+InputBox.propTypes = {
+  onUserInput: PropTypes.func,
+};
+
 export default InputBox;
