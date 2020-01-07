@@ -174,7 +174,7 @@ class Chart extends React.PureComponent {
           symbolSize: 8,
           type: 'scatter',
           legendHoverLink: true,
-          large: true,
+          large: largeBool,
           data: bigData,
           largeThreshold: 1000,
           itemStyle: {
