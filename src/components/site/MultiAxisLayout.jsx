@@ -1,11 +1,12 @@
 import React from 'react';
 import Nouislider from 'nouislider-react';
+import debounce from 'lodash/debounce';
 import API from './API';
-import Chart from './Chart';
+import MultiAxisScatter from './MultiAxisScatter';
 import 'nouislider/distribute/nouislider.css';
 import './StyleSlider.css';
 
-class Practice extends React.PureComponent {
+class MultiAxisLayout extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,38 +77,47 @@ class Practice extends React.PureComponent {
       const obj = arrObj[i];
       const temp = [];
       temp.push(obj.RA);
-      temp.push(obj.Dec);
       temp.push(obj.redshift);
+      temp.push(obj.Dec);
       array.push(temp);
     }
     return array;
   }
 
   render() {
+    const timer = debounce(this.onUpdate, 15);
     const { minimum, maximum, filterData, formatData } = this.state;
-
     return (
       <div>
-        {filterData && formatData && (
-          <Chart
-            bigData={formatData}
-            largeBool
-            trimBool={false}
-            highlightSeries={filterData}
+        {formatData && (
+          <MultiAxisScatter
+            maximum={maximum}
+            shouldTrim
+            dataProp={formatData}
+            altData={filterData}
           />
         )}
-
-        {minimum && maximum && (
-          <Nouislider
-            onUpdate={this.onUpdate}
-            range={{ min: minimum, max: maximum }}
-            start={[minimum, maximum]}
-            tooltips={[true, true]}
-            connect
-          />
-        )}
+        <div
+          style={{
+            marginTop: '100px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {minimum && maximum && (
+            <Nouislider
+              onUpdate={timer}
+              range={{ min: minimum, max: maximum }}
+              start={[minimum, maximum]}
+              tooltips={[true, true]}
+              connect
+            />
+          )}
+        </div>
       </div>
     );
   }
 }
-export default Practice;
+
+export default MultiAxisLayout;

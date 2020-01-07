@@ -10,6 +10,7 @@ import Questions from './Questions';
 import Example from './Example';
 import NoMatch from './components/site/NoMatch';
 import Layout from './components/site/Layout';
+import MultiAxisLayout from './components/site/MultiAxisLayout';
 
 @reactn
 class App extends Component {
@@ -31,6 +32,7 @@ class App extends Component {
               <Route exact path="/questions" component={Questions} />
               <Route exact path="/phase1" component={ChartLayout} />
               <Route exact path="/phase2" component={Layout} />
+              <Route exact path="/phase3" component={MultiAxisLayout} />
               <Route component={NoMatch} />
             </Switch>
           </main>
