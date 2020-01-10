@@ -119,7 +119,13 @@ class Chart extends React.PureComponent {
 
   getOption() {
     let { bigData } = this.props;
-    const { highlightSeries, largeBool, trimBool } = this.props;
+    const {
+      highlightSeries,
+      largeBool,
+      trimBool,
+      sliderChange,
+      sliderFunc,
+    } = this.props;
     const { selectedPt } = this.state;
 
     let opacityNum = 1;
@@ -128,6 +134,10 @@ class Chart extends React.PureComponent {
       opacityNum = 0.25;
       ptColor = '#374785';
     }
+    if (sliderChange) {
+      this.clearArray();
+      sliderFunc();
+    }
 
     if (Object.keys(bigData).length === 0) {
       return {};
@@ -135,6 +145,7 @@ class Chart extends React.PureComponent {
     if (trimBool && highlightSeries.length !== 0) {
       bigData = [];
     }
+    console.log(bigData.length);
     return {
       title: {
         text: 'Exploring Observable Universe',
@@ -252,9 +263,11 @@ class Chart extends React.PureComponent {
 }
 
 Chart.propTypes = {
+  sliderChange: PropTypes.bool,
   largeBool: PropTypes.bool,
   trimBool: PropTypes.bool,
   bigData: PropTypes.array,
+  sliderFunc: PropTypes.func,
   highlightSeries: PropTypes.array,
 };
 

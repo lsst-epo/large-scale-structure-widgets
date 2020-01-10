@@ -36,6 +36,7 @@ class MultiAxisScatter extends React.PureComponent {
     let ptColor = '#a70000';
     if (shouldTrim) {
       bigData = [];
+      ptColor = '#A8D0E6';
     } else {
       ptColor = '#A8D0E6';
     }
