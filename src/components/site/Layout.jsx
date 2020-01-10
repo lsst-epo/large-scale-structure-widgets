@@ -16,6 +16,7 @@ class Practice extends React.PureComponent {
       maximum: null,
       formatData: null,
       filterData: null,
+      didChange: false,
     };
   }
 
@@ -31,19 +32,20 @@ class Practice extends React.PureComponent {
     });
   }
 
-  onUpdate = value => {
-    const { data, sliderVal1, sliderVal2 } = this.state;
+  handleUpdate = value => {
+    const { data } = this.state;
     let newArray = [];
     if (Object.keys(data).length !== 0) {
       const arrObj = data.galaxies;
       newArray = arrObj.filter(obj => {
-        return obj.redshift >= sliderVal1 && obj.redshift <= sliderVal2;
+        return obj.redshift >= value[0] && obj.redshift <= value[1];
       });
     }
     this.setState(prevState => ({
       ...prevState,
       sliderVal1: parseFloat(value[0], 10),
       sliderVal2: parseFloat(value[1], 10),
+      didChange: true,
       filterData: newArray,
     }));
   };
@@ -73,33 +75,37 @@ class Practice extends React.PureComponent {
   createArray(arrObj) {
     const array = [];
     for (let i = 0; i < arrObj.length; i += 1) {
-      const obj = arrObj[i];
-      const temp = [];
-      temp.push(obj.RA);
-      temp.push(obj.Dec);
-      temp.push(obj.redshift);
-      array.push(temp);
+      const { RA, redshift, Dec } = arrObj[i];
+      array.push([RA, redshift, Dec]);
     }
     return array;
   }
 
-  render() {
-    const { minimum, maximum, filterData, formatData } = this.state;
+  resetSlider = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      didChange: false,
+    }));
+  };
 
+  render() {
+    const { minimum, maximum, filterData, formatData, didChange } = this.state;
     return (
       <div>
         {filterData && formatData && (
           <Chart
+            sliderChange={didChange}
             bigData={formatData}
             largeBool
-            trimBool={false}
+            trimBool
             highlightSeries={filterData}
+            sliderFunc={this.resetSlider}
           />
         )}
 
         {minimum && maximum && (
           <Nouislider
-            onUpdate={this.onUpdate}
+            onUpdate={this.handleUpdate}
             range={{ min: minimum, max: maximum }}
             start={[minimum, maximum]}
             tooltips={[true, true]}

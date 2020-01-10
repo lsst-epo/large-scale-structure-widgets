@@ -33,12 +33,12 @@ class MultiAxisLayout extends React.PureComponent {
   }
 
   onUpdate = value => {
-    const { data, sliderVal1, sliderVal2 } = this.state;
+    const { data } = this.state;
     let newArray = [];
     if (Object.keys(data).length !== 0) {
       const arrObj = data.galaxies;
       newArray = arrObj.filter(obj => {
-        return obj.redshift >= sliderVal1 && obj.redshift <= sliderVal2;
+        return obj.redshift >= value[0] && obj.redshift <= value[1];
       });
     }
     this.setState(prevState => ({
@@ -74,12 +74,8 @@ class MultiAxisLayout extends React.PureComponent {
   createArray(arrObj) {
     const array = [];
     for (let i = 0; i < arrObj.length; i += 1) {
-      const obj = arrObj[i];
-      const temp = [];
-      temp.push(obj.RA);
-      temp.push(obj.redshift);
-      temp.push(obj.Dec);
-      array.push(temp);
+      const { RA, redshift, Dec } = arrObj[i];
+      array.push([RA, redshift, Dec]);
     }
     return array;
   }
