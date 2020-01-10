@@ -81,10 +81,10 @@ class Practice extends React.PureComponent {
     return array;
   }
 
-  resetSlider = () => {
+  resetSlider = value => {
     this.setState(prevState => ({
       ...prevState,
-      didChange: false,
+      didChange: value,
     }));
   };
 

@@ -136,7 +136,7 @@ class Chart extends React.PureComponent {
     }
     if (sliderChange) {
       this.clearArray();
-      sliderFunc();
+      sliderFunc(false);
     }
 
     if (Object.keys(bigData).length === 0) {
@@ -145,7 +145,7 @@ class Chart extends React.PureComponent {
     if (trimBool && highlightSeries.length !== 0) {
       bigData = [];
     }
-    console.log(bigData.length);
+
     return {
       title: {
         text: 'Exploring Observable Universe',
