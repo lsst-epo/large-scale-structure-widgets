@@ -13,9 +13,12 @@ class Card extends React.PureComponent {
     const redshift = coors[2];
     if (redshift < 0.09) {
       return '#ffbaba';
-    } else if (redshift < 0.15) {
+    }
+
+    if (redshift < 0.15) {
       return '#ff5252';
     }
+
     return '#a70000';
   };
 

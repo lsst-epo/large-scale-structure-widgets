@@ -2,6 +2,7 @@ import React from 'react';
 import Nouislider from 'nouislider-react';
 import debounce from 'lodash/debounce';
 import API from './API';
+import Page from './Page';
 import MultiAxisScatter from './MultiAxisScatter';
 import 'nouislider/distribute/nouislider.css';
 import './StyleSlider.css';
@@ -84,7 +85,7 @@ class MultiAxisLayout extends React.PureComponent {
     const timer = debounce(this.onUpdate, 15);
     const { minimum, maximum, filterData, formatData } = this.state;
     return (
-      <div>
+      <Page previous="/phase2" next="/">
         {formatData && (
           <MultiAxisScatter
             maximum={maximum}
@@ -111,7 +112,10 @@ class MultiAxisLayout extends React.PureComponent {
             />
           )}
         </div>
-      </div>
+        <br />
+        <br />
+        <br />
+      </Page>
     );
   }
 }

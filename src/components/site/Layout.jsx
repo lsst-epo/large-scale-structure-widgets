@@ -1,6 +1,7 @@
 import React from 'react';
 import Nouislider from 'nouislider-react';
 import API from './API';
+import Page from './Page';
 import Chart from './Chart';
 import 'nouislider/distribute/nouislider.css';
 import './StyleSlider.css';
@@ -91,7 +92,7 @@ class Practice extends React.PureComponent {
   render() {
     const { minimum, maximum, filterData, formatData, didChange } = this.state;
     return (
-      <div>
+      <Page previous="/phase1" next="/phase3">
         {filterData && formatData && (
           <Chart
             sliderChange={didChange}
@@ -112,7 +113,7 @@ class Practice extends React.PureComponent {
             connect
           />
         )}
-      </div>
+      </Page>
     );
   }
 }

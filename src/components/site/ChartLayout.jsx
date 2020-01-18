@@ -1,5 +1,6 @@
 import React from 'react';
 import API from './API';
+import Page from './Page';
 import InputBox from './InputBox';
 import ScatterPlot from './ScatterPlot';
 
@@ -16,7 +17,7 @@ class ChartLayout extends React.PureComponent {
 
   componentDidMount() {
     API.get('static-data/SDSS_SpecGals_DR8_25000.json').then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       this.setState(prevState => ({
         ...prevState,
         data: res.data,
@@ -40,20 +41,20 @@ class ChartLayout extends React.PureComponent {
       if (redshiftVal2 === 0 && redshiftVal1 === 0) {
         newArray = data.galaxies;
       } else {
-        if (isNaN(redshiftVal2)) {
+        if (isNaN(redshiftVal2)) { // eslint-disable-line
           temp = 1;
         }
         const arrObj = data.galaxies;
-        newArray = arrObj.filter(function(obj) {
+        newArray = arrObj.filter(obj => {
           return obj.redshift >= redshiftVal1 && obj.redshift <= temp;
         });
       }
     }
     return (
-      <div>
+      <Page previous="/" next="/phase2">
         <InputBox onUserInput={this.handleUserInput} />
         <ScatterPlot data={newArray} />
-      </div>
+      </Page>
     );
   }
 }
