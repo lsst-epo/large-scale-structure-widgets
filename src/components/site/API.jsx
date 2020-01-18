@@ -4,7 +4,7 @@ const getBaseUrl = function(env) {
   const envs = {
     development: '/',
     staging: '/',
-    production: 'https://lsst-epo.github.io/a-window-to-the-stars/',
+    production: 'https://lsst-epo.github.io/large-scale-structure-widgets/',
   };
 
   return envs[env] || '/';
