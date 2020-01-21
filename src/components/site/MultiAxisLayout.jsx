@@ -85,7 +85,7 @@ class MultiAxisLayout extends React.PureComponent {
     const timer = debounce(this.onUpdate, 15);
     const { minimum, maximum, filterData, formatData } = this.state;
     return (
-      <Page previous="/phase2" next="/">
+      <Page previous="/phase2" next="/phase4">
         {formatData && (
           <MultiAxisScatter
             maximum={maximum}

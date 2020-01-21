@@ -113,6 +113,9 @@ class Practice extends React.PureComponent {
             connect
           />
         )}
+        <br />
+        <br />
+        <br />
       </Page>
     );
   }

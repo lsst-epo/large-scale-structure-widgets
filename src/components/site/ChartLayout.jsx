@@ -54,6 +54,9 @@ class ChartLayout extends React.PureComponent {
       <Page previous="/" next="/phase2">
         <InputBox onUserInput={this.handleUserInput} />
         <ScatterPlot data={newArray} />
+        <br />
+        <br />
+        <br />
       </Page>
     );
   }

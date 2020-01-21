@@ -11,6 +11,7 @@ import Example from './Example';
 import NoMatch from './components/site/NoMatch';
 import Layout from './components/site/Layout';
 import MultiAxisLayout from './components/site/MultiAxisLayout';
+import MultiAxisLayoutBig from './components/site/MultiAxisLayoutBig';
 
 @reactn
 class App extends Component {
@@ -33,6 +34,7 @@ class App extends Component {
               <Route exact path="/phase1" component={ChartLayout} />
               <Route exact path="/phase2" component={Layout} />
               <Route exact path="/phase3" component={MultiAxisLayout} />
+              <Route exact path="/phase4" component={MultiAxisLayoutBig} />
               <Route component={NoMatch} />
             </Switch>
           </main>

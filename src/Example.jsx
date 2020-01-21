@@ -21,6 +21,9 @@ class Example extends React.PureComponent {
               <li>
                 <Link to="/phase3">Widgets: Phase 3</Link>
               </li>
+              <li>
+                <Link to="/phase4">Widgets: Phase 4</Link>
+              </li>
             </ul>
           </div>
           <br />
