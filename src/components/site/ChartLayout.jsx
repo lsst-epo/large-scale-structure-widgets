@@ -41,7 +41,7 @@ class ChartLayout extends React.PureComponent {
       if (redshiftVal2 === 0 && redshiftVal1 === 0) {
         newArray = data.galaxies;
       } else {
-        if (isNaN(redshiftVal2)) { // eslint-disable-line
+        if (Number.isNaN(redshiftVal2)) {
           temp = 1;
         }
         const arrObj = data.galaxies;
@@ -53,6 +53,13 @@ class ChartLayout extends React.PureComponent {
     return (
       <Page previous="/" next="/phase2">
         <InputBox onUserInput={this.handleUserInput} />
+        <h3
+          style={{
+            paddingBottom: 50,
+          }}
+        >
+          Redshift Range Displayed: {redshiftVal1} - {redshiftVal2}
+        </h3>
         <ScatterPlot data={newArray} />
         <br />
         <br />

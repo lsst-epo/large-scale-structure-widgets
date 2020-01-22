@@ -83,7 +83,14 @@ class MultiAxisLayout extends React.PureComponent {
 
   render() {
     const timer = debounce(this.onUpdate, 15);
-    const { minimum, maximum, filterData, formatData } = this.state;
+    const {
+      minimum,
+      maximum,
+      filterData,
+      formatData,
+      sliderVal2,
+      sliderVal1,
+    } = this.state;
     return (
       <Page previous="/phase2" next="/phase4">
         {formatData && (
@@ -94,9 +101,17 @@ class MultiAxisLayout extends React.PureComponent {
             altData={filterData}
           />
         )}
+        <h3
+          style={{
+            marginTop: '75px',
+            textAlign: 'center',
+          }}
+        >
+          Redshift Range Displayed: {sliderVal1} - {sliderVal2}
+        </h3>
         <div
           style={{
-            marginTop: '100px',
+            marginTop: '50px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

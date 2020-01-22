@@ -90,7 +90,15 @@ class Practice extends React.PureComponent {
   };
 
   render() {
-    const { minimum, maximum, filterData, formatData, didChange } = this.state;
+    const {
+      minimum,
+      maximum,
+      filterData,
+      formatData,
+      didChange,
+      sliderVal1,
+      sliderVal2,
+    } = this.state;
     return (
       <Page previous="/phase1" next="/phase3">
         {filterData && formatData && (
@@ -104,6 +112,13 @@ class Practice extends React.PureComponent {
           />
         )}
 
+        <h3
+          style={{
+            paddingBottom: 50,
+          }}
+        >
+          Redshift Range Displayed: {sliderVal1} - {sliderVal2}
+        </h3>
         {minimum && maximum && (
           <Nouislider
             onUpdate={this.handleUpdate}
