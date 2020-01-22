@@ -24,7 +24,7 @@ class InputBox extends React.PureComponent {
     onUserInput(name, event);
   };
 
-  renderTextField(id, redshiftKey) {
+  renderTextField(id, redshiftKey, phrase) {
     return (
       <span>
         <TextField
@@ -35,7 +35,7 @@ class InputBox extends React.PureComponent {
           label=""
           onChange={this.handleChange(redshiftKey)}
           lineDirection="center"
-          placeholder="Type Number Here"
+          placeholder={phrase}
         />
       </span>
     );
@@ -52,11 +52,19 @@ class InputBox extends React.PureComponent {
             <span style={{ margin: '10px' }} className="inline">
               From
             </span>
-            {this.renderTextField('inline-text-inline-1', 'redshiftVal1')}
+            {this.renderTextField(
+              'inline-text-inline-1',
+              'redshiftVal1',
+              'Minimum Value: 0.02'
+            )}
             <span style={{ margin: '10px' }} className="inline">
               to
             </span>
-            {this.renderTextField('inline-text-inline-2', 'redshiftVal2')}
+            {this.renderTextField(
+              'inline-text-inline-2',
+              'redshiftVal2',
+              'Maximum value: 0.20'
+            )}
           </div>
         </CardBody>
       </Card>
