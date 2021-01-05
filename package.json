@@ -65,7 +65,7 @@
     "@babel/runtime": "7.4.4",
     "@hot-loader/react-dom": "^16.8.6",
     "@nivo/scatterplot": "^0.59.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-plugin-transform-react-pure-class-to-function": "1.0.1",
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "classnames": "^2.2.6",
